@@ -8,24 +8,26 @@ def all_list():
         information = re.split(',', information)
         informationList.append(information)       #添加到我们建的列表
         informationList[-1][0]=int(informationList[-1][0])
-        if len(informationList[-1]) > 4:                       #有的名字中间会带逗号，应当把被分割掉的名字合并
-            fullname=informationList[-1][2]+informationList[-1][3]
-            informationList[-1][2]=fullname
-            informationList[-1][3]=informationList[-1][4]
-            informationList[-1].pop()
-        if re.match('government',informationList[-1][3]):   #给数据分类
+        while(len(informationList[-1])>4):
+            fullname = informationList[-1][2] + str(informationList[-1][3])
+            informationList[-1][2] = fullname
+            i=3
+            while (i < len(informationList[-1])-1):
+                informationList[-1][i] = informationList[-1][i + 1]
+                i = i + 1
+            del (informationList[-1][-1])
+            print("modified")
+            print(informationList[-1])
+        if re.match('government',informationList[-1][-1]):   #给数据分类
             informationList[-1][3] = 1
-        elif re.match('politician', informationList[-1][3]):
+        elif re.match('politician', informationList[-1][-1]):
             informationList[-1][3] = 2
-        elif re.match('company', informationList[-1][3]):
+        elif re.match('company', informationList[-1][-1]):
             informationList[-1][3] = 3
-        elif re.match('tvshow', informationList[-1][3]):
+        elif re.match('tvshow', informationList[-1][-1]):
             informationList[-1][3] = 4
-        if not isinstance(informationList[-1][3],int):  #有一些无法被识别的文字，如果不删除就是乱码，不方便后面操作
-            del(informationList[-1])
-        if informationList[-1][3]>4:
-            del (informationList[-1])
-
+        if not isinstance(informationList[-1][-1],int):  #有一些无法被识别的文字，如果不删除就是乱码，不方便后面操作
+            informationList[-1][-1] = 0
 
     return informationList
 
@@ -78,8 +80,6 @@ def alltype(type):
             typeList.append(list[i])
     return typeList
 
-for li in tvshow():
-    print(li)
 
 
 

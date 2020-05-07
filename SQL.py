@@ -43,7 +43,7 @@ def insert_data(list, table_name):
     db = sqlconnect()
     cursor = db.cursor()
     cursor.execute("USE FaceBookRank")
-    for i in range(1, len(list)):
+    for i in range(0, len(list)-1):
         sql = "INSERT INTO %s VALUES (%d,%d,'%s','%s',%d,%d,%d,%d)"
         cursor.execute(sql % (table_name, i, list[i][0], pymysql.escape_string(list[i][1]),
                               pymysql.escape_string(list[i][2]), list[i][3], 0, 0, 0))
@@ -59,7 +59,22 @@ def insert(type):
     insert_data(typelist, type)
 
 
+def insertOneData(tableName,column,list):
+    print(len(list))
+    db=sqlconnect()
+    cursor = db.cursor()
+    cursor.execute("USE FaceBookRank")
+
+    for i in range(0, len(list) - 1):
+        sql = "UPDATE %s SET %s=%d WHERE id=%d"
+        cursor.execute(sql % (tableName,column,int(list[i]),i))
+        print(list[i],i)
+        db.commit()
+    cursor.close()
+
+
+
 #insert('company')
 #insert('politician')
 #insert('government')
-insert('all_')
+#insert('all_')
